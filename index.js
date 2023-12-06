@@ -52,6 +52,12 @@ async function run() {
             res.send(user);
         })
 
+        app.get('/allproduct', async (req, res) => {
+            const cursor = shopCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
         app.post('/allproduct', async (req, res) => {
             const addproduct = req.body;
             console.log('new product', addproduct);
