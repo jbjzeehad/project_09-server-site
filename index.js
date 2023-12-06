@@ -36,6 +36,7 @@ async function run() {
 
         const database = client.db('usersDB');
         const usersCollection = database.collection('users');
+        const shopCollection = database.collection('allproduct');
 
 
         app.get('/users', async (req, res) => {
@@ -44,12 +45,41 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const user = await usersCollection.findOne(query);
+            res.send(user);
+        })
+
+        app.post('/allproduct', async (req, res) => {
+            const addproduct = req.body;
+            console.log('new product', addproduct);
+            const addingProduct = await shopCollection.insertOne(addproduct);
+            res.send(addingProduct);
+        })
+
         app.post('/users', async (req, res) => {
             const user = req.body;
             console.log('new user', user);
             const result = await usersCollection.insertOne(user);
             res.send(result);
         });
+        app.put('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const user = req.body;
+            console.log(id, user);
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updatedUser = {
+                $set: {
+                    name: user.name,
+                    email: user.email
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updatedUser, options);
+            res.send(result);
+        })
 
         app.delete('/users/:id', async (req, res) => {
             const id = req.params.id;
@@ -92,6 +122,8 @@ run().catch(console.dir);
 //     users.push(newUser);
 //     res.send(newUser);
 // })
+
+
 
 //////////////////////////////////
 app.get('/', (req, res) => {
