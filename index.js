@@ -67,10 +67,29 @@ async function run() {
             const options = { upsert: true };
             const updatedUser = {
                 $set: {
-                    name: user.name
+                    name: user.name,
+                    brand: user.brand,
+                    type: user.type,
+                    rating: user.rating,
+                    price: user.price,
+                    image: user.image
                 }
             }
             const result = await shopCollection.updateOne(filter, updatedUser, options);
+            res.send(result);
+        })
+
+
+        app.post('/users', async (req, res) => {
+            const addproduct = req.body;
+            console.log('new product', addproduct);
+            const addingProduct = await usersCollection.insertOne(addproduct);
+            res.send(addingProduct);
+        })
+
+        app.get('/users', async (req, res) => {
+            const cursor = usersCollection.find();
+            const result = await cursor.toArray();
             res.send(result);
         })
 
@@ -94,31 +113,6 @@ async function run() {
 }
 run().catch(console.dir);
 
-
-
-//////////////////////////////////
-
-// const users = [
-//     { id: 1, name: 'Sabana', email: 'sb@Mail.com' },
-//     { id: 2, name: 'jabana', email: 'jab@Mail.com' },
-//     { id: 3, name: 'Babana', email: 'bb@Mail.com' }
-// ]
-
-// app.get('/users', (req, res) => {
-//     res.send(users);
-// })
-// app.post('/users', (req, res) => {
-//     console.log('Post api hitting');
-//     console.log(req.body);
-//     const newUser = req.body;
-//     newUser.id = users.length + 1;
-//     users.push(newUser);
-//     res.send(newUser);
-// })
-
-
-
-//////////////////////////////////
 app.get('/', (req, res) => {
     res.send('Simple CURD is running');
 })
