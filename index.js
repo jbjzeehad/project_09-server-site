@@ -14,9 +14,6 @@ app.use(express.json());
 
 
 
-
-
-
 const uri = "mongodb+srv://jbjzeehad1:oJwt1W811mbSA6VH@brandshop.fsu7nul.mongodb.net/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -39,18 +36,7 @@ async function run() {
         const shopCollection = database.collection('allproduct');
 
 
-        app.get('/users', async (req, res) => {
-            const cursor = usersCollection.find();
-            const result = await cursor.toArray();
-            res.send(result);
-        })
 
-        app.get('/users/:id', async (req, res) => {
-            const id = req.params.id;
-            const query = { _id: new ObjectId(id) }
-            const user = await usersCollection.findOne(query);
-            res.send(user);
-        })
 
         app.get('/allproduct', async (req, res) => {
             const cursor = shopCollection.find();
@@ -65,13 +51,15 @@ async function run() {
             res.send(addingProduct);
         })
 
-        app.post('/users', async (req, res) => {
-            const user = req.body;
-            console.log('new user', user);
-            const result = await usersCollection.insertOne(user);
-            res.send(result);
-        });
-        app.put('/users/:id', async (req, res) => {
+        app.get('/allproduct/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const user = await shopCollection.findOne(query);
+            res.send(user);
+            console.log('update :', user);
+        })
+
+        app.put('/allproduct/:id', async (req, res) => {
             const id = req.params.id;
             const user = req.body;
             console.log(id, user);
@@ -79,11 +67,10 @@ async function run() {
             const options = { upsert: true };
             const updatedUser = {
                 $set: {
-                    name: user.name,
-                    email: user.email
+                    name: user.name
                 }
             }
-            const result = await usersCollection.updateOne(filter, updatedUser, options);
+            const result = await shopCollection.updateOne(filter, updatedUser, options);
             res.send(result);
         })
 
