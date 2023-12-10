@@ -103,9 +103,9 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-    res.send('Simple CURD is running');
+    res.send('AEMotors Server Running');
 })
 
 app.listen(port, () => {
-    console.log(`CRUD is running on PORT: ${port}`);
+    console.log(`Running on PORT: ${port}`);
 })
