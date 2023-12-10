@@ -68,8 +68,6 @@ async function run() {
             const result = await shopCollection.updateOne(filter, updatedUser, options);
             res.send(result);
         })
-
-
         app.post('/users', async (req, res) => {
             const addproduct = req.body;
             console.log('new product', addproduct);
