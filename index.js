@@ -4,15 +4,8 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5000;
 
-
 app.use(cors());
 app.use(express.json());
-///////////////////////////
-// jbjzeehad1
-// oJwt1W811mbSA6VH
-///////////////////////////
-
-
 
 const uri = "mongodb+srv://jbjzeehad1:oJwt1W811mbSA6VH@brandshop.fsu7nul.mongodb.net/?retryWrites=true&w=majority";
 
@@ -34,9 +27,6 @@ async function run() {
         const database = client.db('usersDB');
         const usersCollection = database.collection('users');
         const shopCollection = database.collection('allproduct');
-
-
-
 
         app.get('/allproduct', async (req, res) => {
             const cursor = shopCollection.find();
@@ -102,7 +92,7 @@ async function run() {
         });
 
 
-        ///////////////////////////////////////////////////////////
+
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
